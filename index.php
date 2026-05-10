@@ -9,6 +9,7 @@
     <?php include "layout/css.php" ?>
 </head>
 <body>
+    <?php include "includes/loader.php";?>
     <section>
         <div style="height: 100%; width:100%;">
             <div class="login-container">
@@ -17,7 +18,7 @@
                     <div class="box-body col-md-12">
                         <p class="login-box-msg">Sign in to start your session</p>
 
-                        <div id="login_error" class="login-box-msg" style="color: red;">
+                        <div id="login_error" class="login-box-msg">
                             <span id="error"></span>
                         </div>
                         <form>
@@ -25,8 +26,8 @@
                                 <input type="text" class="form-control" placeholder="Username" id="username">
                             </div>
 
-                            <div class="form-group has-feedback" style="display: relative;">
-                                <input type="text" class="form-control" placeholder="Password" id="password">
+                            <div class="form-group has-feedback password-group">
+                                <input type="password" class="form-control" placeholder="Password" id="password">
                                 <span id="toggleIcon"
                                     class="fa fa-eye">
                                 </span>
@@ -41,5 +42,11 @@
             </div>
         </div>
     </section>
+
+
+    <!-- javascript -->
+    <?php include "layout/js.php";?>
+
+    <script type="text/javascript" src="assets/js/module/index.js"></script>
 </body>
 </html>
