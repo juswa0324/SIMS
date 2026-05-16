@@ -6,7 +6,7 @@
 
     <link rel="stylesheet" href="assets/css/index.css">
 
-    <?php include "layout/css.php" ?>
+    <?php include "includes/css.php" ?>
 </head>
 <body>
     <?php include "includes/loader.php";?>
@@ -45,7 +45,7 @@
 
 
     <!-- javascript -->
-    <?php include "layout/js.php";?>
+    <?php include "includes/js.php";?>
 
     <script type="text/javascript" src="assets/js/module/index.js"></script>
 </body>

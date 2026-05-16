@@ -30,6 +30,7 @@ if (!empty($_POST['username']) && !empty($_POST['password'])) {
 				$_SESSION["fname"] = $result[0]['Firstname'];
 				$_SESSION["lname"] = $result[0]['Lastname'];
 				$_SESSION["Email"] = $result[0]['Email'];
+				$_SESSION["Department"] = $result[0]['Department'];
 				$_SESSION["Username"] = $result[0]['Username'];
 
 
