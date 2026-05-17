@@ -14,7 +14,10 @@ if (!empty($_POST['username']) && !empty($_POST['password'])) {
 		$user = $_POST['username'];
 		$pass = $_POST['password'];
 
-        $sql = "SELECT * FROM users WHERE Username = :user AND Deleted = 0";
+        $sql = "SELECT users.*, roles.Role, roles.Permission  
+				FROM users  
+				LEFT JOIN roles ON roles.id = users.RoleID
+				WHERE users.Username = :user AND users.Deleted = 0";
 
 		$query = $pdo->prepare($sql);
 		$query->bindValue(":user", $user, PDO::PARAM_STR);
@@ -31,7 +34,23 @@ if (!empty($_POST['username']) && !empty($_POST['password'])) {
 				$_SESSION["lname"] = $result[0]['Lastname'];
 				$_SESSION["Email"] = $result[0]['Email'];
 				$_SESSION["Department"] = $result[0]['Department'];
+				$_SESSION["Role"] = $result[0]['Role'];
 				$_SESSION["Username"] = $result[0]['Username'];
+				$permissions = $result[0]['Permission'];
+
+				$permissionSql = " SELECT * 
+								   FROM permission_list 
+								   WHERE FIND_IN_SET(id, :permissions) > 0
+    							   ORDER BY parentID ASC, sortOrder ASC";
+
+				$permissionQuery = $pdo->prepare($permissionSql);
+				$permissionQuery->bindValue(":permissions", $permissions, PDO::PARAM_STR);
+				$permissionQuery->execute();
+				$permissionResult = $permissionQuery->fetchAll();
+				$permissionQuery = "";
+
+				$_SESSION['permissionArray'] = $permissionResult;
+
 
 
 
@@ -41,12 +60,12 @@ if (!empty($_POST['username']) && !empty($_POST['password'])) {
 
 				// audit_logs($_SESSION["fname"] . " " . $_SESSION["lname"], "Login", "", "");
 
-				echo json_encode(['status' => 'success', 'redirect' => $redirect_url]);
+				echo json_encode(['success' => true, 'redirect' => $redirect_url]);
 			} else {
-				echo json_encode(['status' => 'error', 'message' => 'Invalid username or password']);
+				echo json_encode(['success' => false, 'message' => 'Invalid username or password']);
 			}
 		} else {
-			echo json_encode(['status' => 'error', 'message' => 'Invalid username or password']);
+			echo json_encode(['success' => false, 'message' => 'Invalid username or password']);
 		}
 	} catch (PDOException $ex) {
 		echo $ex;

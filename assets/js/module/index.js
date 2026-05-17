@@ -1,4 +1,6 @@
-function showHidePassword() {
+import * as api from "../api/api.js";
+
+async function showHidePassword() {
   const password = document.getElementById("password");
   const icon = document.getElementById("toggleIcon");
 
@@ -13,7 +15,7 @@ function showHidePassword() {
   }
 }
 
-function clearInput() {
+async function clearInput() {
   const inputFields = ["username", "password"];
 
   inputFields.forEach((id) => {
@@ -21,62 +23,65 @@ function clearInput() {
   });
 }
 
-function login() {
+async function login() {
   // Get the VALUES, not the DOM elements
   const username = document.getElementById("username").value.trim();
   const password = document.getElementById("password").value;
 
-  $.ajax({
-    url: "functions/login.php",
-    type: "POST",
-    dataType: "json",
-    cache: false,
-    data: {
-      username: username,
-      password: password,
-    },
-    beforeSend: function () {
-      $("#loader").css("display", "flex");
-    },
-    success: function (response) {
-      $("#loader").hide();
+  try {
+    api.showLoader();
 
-      if (response.status === "success") {
-        window.location.href = response.redirect;
-      } else {
-        $("#error").text(response.message);
-        clearInput();
-      }
-    },
-    error: function (xhr, status, error) {
-      $("#loader").hide();
-      console.error("AJAX Error:", error);
+    const response = await api.postData(`functions/login.php`, {
+      username,
+      password,
+    });
+
+    if (!response.success) {
+      console.error("Server Error: ", response.message);
       swal.fire({
         icon: "error",
-        title: "Something went wrong!",
-        text: "Unexpected error occured. Please contact the administrator.",
+        title: "Oops...",
+        text: response.message || "Login Failed.",
       });
-    },
-  });
+
+      $("#error").text(response.message);
+      clearInput();
+
+      return false;
+    }
+
+    window.location.href = response.redirect;
+  } catch (err) {
+    console.error("Fetching Error: ", err);
+    swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text:
+        err.message ||
+        "Unexpected error occured. Please contact the administrator.",
+    });
+  } finally {
+    api.hideLoader();
+  }
 }
 
 $(function () {
   // Toggle password visibility
-  $(document).on("click", "#toggleIcon", function () {
-    showHidePassword();
+  $(document).on("click", "#toggleIcon", async function () {
+    await showHidePassword();
   });
 
   // Sign in button click
-  $(document).on("click", "#btnSignIn", function (e) {
+  $(document).on("click", "#btnSignIn", async function (e) {
     e.preventDefault(); // Prevent form submit if button is inside a form
-    login();
+    await login();
   });
 
   // Optional: Press Enter to login
-  $(document).on("keypress", "#username, #password", function (e) {
+  $(document).on("keypress", "#username, #password", async function (e) {
     if (e.which === 13) {
       e.preventDefault();
-      login();
+      await login();
     }
   });
 });

@@ -47,6 +47,6 @@
     <!-- javascript -->
     <?php include "includes/js.php";?>
 
-    <script type="text/javascript" src="assets/js/module/index.js"></script>
+    <script type="module" src="assets/js/module/index.js"></script>
 </body>
 </html>

@@ -9,3 +9,5 @@
  <script src="assets/AdminLTE-3.2.0/dist/js/adminlte.min.js"></script>
 <!-- SweetAlert -->
 <script src="assets/sweetalert2/js/sweetalert2.min.js"></script>
+<!-- Sidebar -->
+<script src="assets/js/module/sidebar.js"></script>
