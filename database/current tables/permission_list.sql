@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 07, 2026 at 01:26 PM
+-- Generation Time: Jun 07, 2026 at 01:27 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -24,47 +24,47 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Table structure for table `permission_list`
 --
 
-CREATE TABLE `users` (
-  `UserID` int(11) NOT NULL,
-  `Firstname` varchar(1000) NOT NULL,
-  `Lastname` varchar(1000) NOT NULL,
-  `Email` varchar(1000) NOT NULL,
-  `Username` varchar(1000) NOT NULL,
-  `Password` varchar(1000) NOT NULL,
-  `RoleID` int(11) NOT NULL DEFAULT 0,
-  `Department` varchar(1000) DEFAULT NULL,
+CREATE TABLE `permission_list` (
+  `id` int(11) NOT NULL,
+  `parentID` int(11) DEFAULT NULL,
+  `Permission` varchar(1000) DEFAULT NULL,
+  `link` varchar(1000) DEFAULT NULL,
+  `icon` varchar(1000) DEFAULT NULL,
+  `sortOrder` int(11) DEFAULT NULL,
   `Deleted` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `users`
+-- Dumping data for table `permission_list`
 --
 
-INSERT INTO `users` (`UserID`, `Firstname`, `Lastname`, `Email`, `Username`, `Password`, `RoleID`, `Department`, `Deleted`) VALUES
-(1, 'Joshua', 'De Leon', 'd.joshua0324@gmail.com', 'Admin', '$2y$10$mGsZ1/gPcO3j4BBkSCAlUOEK1zmd22YK/fhzQmrpBiFlFts3ScLCm', 1, 'Developer', 0);
+INSERT INTO `permission_list` (`id`, `parentID`, `Permission`, `link`, `icon`, `sortOrder`, `Deleted`) VALUES
+(1, NULL, 'Dashboard', 'home.php', 'fa fa-dashboard', 1, 0),
+(2, NULL, 'My Account', NULL, 'fa fa-user', 2, 0),
+(3, 2, 'Profile', 'profile.php', 'fa fa-circle', 1, 0);
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `users`
+-- Indexes for table `permission_list`
 --
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`UserID`);
+ALTER TABLE `permission_list`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT for table `permission_list`
 --
-ALTER TABLE `users`
-  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+ALTER TABLE `permission_list`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

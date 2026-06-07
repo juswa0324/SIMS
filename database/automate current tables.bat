@@ -1,7 +1,7 @@
 @echo off
-set DB_USER=gflmci
-set DB_PASS=Airetow321
-set DB_NAME=gflmci
+set DB_USER=sims
+set DB_PASS=sims@2026
+set DB_NAME=sims
 
 echo Running current tables...
 for %%f in ("current tables\*.sql") do (

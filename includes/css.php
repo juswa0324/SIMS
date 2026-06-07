@@ -21,4 +21,6 @@
  <link rel="stylesheet" href="assets/AdminLTE-3.2.0/plugins/select2/css/select2.min.css">
 <!-- Header style -->
  <link rel="stylesheet" href="assets/css/header.css">
+ <!-- sidebar style -->
+ <link rel="stylesheet" href="assets/css/sidebar.css">
 

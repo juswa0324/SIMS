@@ -24,47 +24,42 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Table structure for table `roles`
 --
 
-CREATE TABLE `users` (
-  `UserID` int(11) NOT NULL,
-  `Firstname` varchar(1000) NOT NULL,
-  `Lastname` varchar(1000) NOT NULL,
-  `Email` varchar(1000) NOT NULL,
-  `Username` varchar(1000) NOT NULL,
-  `Password` varchar(1000) NOT NULL,
-  `RoleID` int(11) NOT NULL DEFAULT 0,
-  `Department` varchar(1000) DEFAULT NULL,
+CREATE TABLE `roles` (
+  `id` int(11) NOT NULL,
+  `Role` varchar(1000) DEFAULT NULL,
+  `Permission` text NOT NULL,
   `Deleted` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `users`
+-- Dumping data for table `roles`
 --
 
-INSERT INTO `users` (`UserID`, `Firstname`, `Lastname`, `Email`, `Username`, `Password`, `RoleID`, `Department`, `Deleted`) VALUES
-(1, 'Joshua', 'De Leon', 'd.joshua0324@gmail.com', 'Admin', '$2y$10$mGsZ1/gPcO3j4BBkSCAlUOEK1zmd22YK/fhzQmrpBiFlFts3ScLCm', 1, 'Developer', 0);
+INSERT INTO `roles` (`id`, `Role`, `Permission`, `Deleted`) VALUES
+(1, 'Developer', '1,2,3', 0);
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `users`
+-- Indexes for table `roles`
 --
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`UserID`);
+ALTER TABLE `roles`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT for table `roles`
 --
-ALTER TABLE `users`
-  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+ALTER TABLE `roles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

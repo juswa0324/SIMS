@@ -1,4 +1,3 @@
-
 <!-- JQuery -->
 <script src="assets/AdminLTE-3.2.0/plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap -->
