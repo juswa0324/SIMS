@@ -1,26 +1,12 @@
+//api
+import * as api from "../api/api.js";
+
 $(document).ready(async function () {
   const loginID = document.getElementById("LoginID");
 
   if (loginID) {
     await populate_sidebar();
   }
-});
-
-$(document).on("mouseenter", ".sidebar-menu a", function () {
-  const $this = $(this);
-  $this
-    .data("prehovercolor", $this.css("background-image"))
-    .css("background-image", "linear-gradient(#FFFFFF, #FFFFFF)")
-    .css("color", "#000000");
-  $this.find("path").css("fill", "#000000");
-});
-
-$(document).on("mouseleave", ".sidebar-menu a", function () {
-  const $this = $(this);
-  $this
-    .css("background-image", $this.data("prehovercolor"))
-    .css("color", "#FFFFFF");
-  $this.find("path").css("fill", "#FFFFFF");
 });
 
 async function populate_sidebar() {
@@ -61,7 +47,7 @@ async function populate_sidebar() {
     ul.className = "sidebar-menu pl-0";
 
     function renderItems(items, parentUl) {
-      items.forEach((item) => {
+      items.forEach(async (item) => {
         if (item.Deleted === 1) return;
 
         const li = document.createElement("li");
@@ -88,6 +74,20 @@ async function populate_sidebar() {
 
         li.appendChild(a);
 
+        a.addEventListener("click", async (e) => {
+          e.preventDefault();
+
+          const link = item.link;
+
+          if (!item.link) return;
+
+          const allowed = await validateLinkPermission(link);
+
+          if (!allowed) return;
+
+          window.location.href = link;
+        });
+
         // Recursively render children
         if (item.children.length) {
           const subUl = document.createElement("ul");
@@ -108,37 +108,125 @@ async function populate_sidebar() {
   sidebar.appendChild(renderMenu(tree));
 }
 
-// SESSION ERRORS
-// function validate_session() {
-//   $.ajax({
-//     url: BASE_URL + "functions/validate_session.php",
-//     type: "GET",
-//     dataType: "json",
-//     success: function (response) {
-//       if (response.status === "success") {
-//         // User is logged in
-//         $("#result").html("<p>User is logged in.</p>");
-//       } else {
-//         // User is not logged in, redirect to index.php
-//         Swal.fire({
-//           Permission: "Your session has expired.",
-//           text: "You will be redirected to the Login page.",
-//           icon: "error", // you can use 'success', 'error', 'warning', 'info', 'question'
-//           confirmButtonText: "OK",
-//         }).then((result) => {
-//           if (result.isConfirmed) {
-//             // Code to execute after clicking OK button
-//             window.location.href = "index.php";
-//           }
-//         });
-//       }
-//     },
-//     error: function (xhr, status, error) {
-//       console.error(xhr.responseText);
-//     },
-//   });
-// }
+async function validateLinkPermission(link) {
+  try {
+    api.showLoader();
 
-// document.addEventListener("click", function (event) {
-//   validate_session();
-// });
+    let isValid = true;
+
+    const response = await api.postData(
+      `functions/validateLinkPermission.php`,
+      {
+        link,
+      },
+    );
+
+    if (!response.success) {
+      console.error("Server error: ", response.error);
+      swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Failed to validate link permission.",
+      });
+      return;
+    }
+
+    if (!response.hasAccess) {
+      console.error("Error: Access Denied!");
+      const returnToPreviousPage = (
+        await swal.fire({
+          icon: "error",
+          title: "Access Denied!",
+        })
+      ).isConfirmed;
+
+      if (!returnToPreviousPage) return;
+
+      window.location.reload();
+
+      isValid = false;
+    }
+
+    return isValid;
+  } catch (err) {
+    console.error("Fetching Errors: ", err);
+    swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Unexpected error occured. Please contact the administrator.",
+    });
+    return;
+  } finally {
+    api.hideLoader();
+  }
+}
+
+// SESSION ERRORS
+async function validate_session() {
+  try {
+    api.showLoader();
+
+    const response = await api.getData("functions/validate_session.php");
+
+    if (!response.success) {
+      console.error("Server Error:", response.error);
+      swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Failed to validate session. Please contact the administrator.",
+      });
+      return;
+    }
+
+    if (!response.active) {
+      const backToLoginPage = (
+        await swal.fire({
+          icon: "info",
+          title: "Your session has expired!",
+          text: "You will be redirected to login page.",
+        })
+      ).isConfirmed;
+
+      if (!backToLoginPage) return;
+
+      window.location.replace("index.php");
+    }
+
+    $("#result").html("<p>User is logged in.</p>");
+  } catch (err) {
+    console.error("Fetching errors: ", err);
+    swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Unexpected error occured. Please contact the administrator.",
+    });
+    return;
+  } finally {
+    api.hideLoader();
+  }
+}
+
+$(function () {
+  $(document).on("mouseenter", ".sidebar-menu a", function () {
+    const $this = $(this);
+    $this
+      .data("prehovercolor", $this.css("background-image"))
+      .css("background-image", "linear-gradient(#FFFFFF, #FFFFFF)")
+      .css("color", "#000000");
+    $this.find("path").css("fill", "#000000");
+  });
+
+  $(document).on("mouseleave", ".sidebar-menu a", function () {
+    const $this = $(this);
+    $this
+      .css("background-image", $this.data("prehovercolor"))
+      .css("color", "#FFFFFF");
+    $this.find("path").css("fill", "#FFFFFF");
+  });
+
+  setInterval(validate_session, 300000);
+
+  $(document).on("click", function () {
+    validate_session();
+  });
+});

@@ -1,15 +1,18 @@
+<?php $page = "login"; ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    
+
     <title>SIMS | Login</title>
 
     <link rel="stylesheet" href="assets/css/index.css">
 
     <?php include "includes/css.php" ?>
 </head>
+
 <body>
-    <?php include "includes/loader.php";?>
+    <?php include "includes/loader.php"; ?>
     <section>
         <div style="height: 100%; width:100%;">
             <div class="login-container">
@@ -45,8 +48,9 @@
 
 
     <!-- javascript -->
-    <?php include "includes/js.php";?>
+    <?php include "includes/js.php"; ?>
 
     <script type="module" src="assets/js/module/index.js"></script>
 </body>
+
 </html>

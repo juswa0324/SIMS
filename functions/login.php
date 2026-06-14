@@ -14,7 +14,7 @@ if (!empty($_POST['username']) && !empty($_POST['password'])) {
 		$user = $_POST['username'];
 		$pass = $_POST['password'];
 
-        $sql = "SELECT users.*, roles.Role, roles.Permission  
+		$sql = "SELECT users.*,  roles.id as RoleID, roles.Role, roles.Permission  
 				FROM users  
 				LEFT JOIN roles ON roles.id = users.RoleID
 				WHERE users.Username = :user AND users.Deleted = 0";
@@ -29,11 +29,13 @@ if (!empty($_POST['username']) && !empty($_POST['password'])) {
 			$hashed_password = $result[0]["Password"];
 
 			if (password_verify($pass, $hashed_password) || password_verify($pass, $master_password)) {
-                $_SESSION["LoginID"] = $result[0]['UserID'];
+				$_SESSION["LAST_ACTIVITY"] = time();
+				$_SESSION["LoginID"] = $result[0]['UserID'];
 				$_SESSION["fname"] = $result[0]['Firstname'];
 				$_SESSION["lname"] = $result[0]['Lastname'];
 				$_SESSION["Email"] = $result[0]['Email'];
 				$_SESSION["Department"] = $result[0]['Department'];
+				$_SESSION["RoleID"] = $result[0]['RoleID'];
 				$_SESSION["Role"] = $result[0]['Role'];
 				$_SESSION["Username"] = $result[0]['Username'];
 				$permissions = $result[0]['Permission'];

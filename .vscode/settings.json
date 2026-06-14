@@ -4,10 +4,12 @@
   "editor.formatOnSave": true,
 
   "[php]": {
+    "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
+  },
+  "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-
-  "files.associations": {
-    "*.php": "html"
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }
