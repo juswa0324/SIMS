@@ -1,6 +1,10 @@
 <?php
 $page = "app";
 session_start();
+require_once 'config/database.php';
+require_once 'core/guard.php';
+
+requireAccess($pdo, $_SESSION['LoginID'] ?? null, basename($_SERVER['PHP_SELF']));
 ?>
 <!doctype html>
 <html lang="en">
@@ -168,6 +172,8 @@ session_start();
   <!-- ./wrapper -->
 
   <?php include 'includes/js.php'; ?>
+
+  <script type="module" src="assets/js/module/profile.js"></script>
 </body>
 
 </html>

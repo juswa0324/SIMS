@@ -44,11 +44,12 @@ if (!empty($_POST['link'])) {
 
         // 3. Get role permissions
         $stmt = $pdo->prepare("
-            SELECT Permission 
-            FROM roles 
-            WHERE id = :roleId AND Deleted = 0
+            SELECT * 
+            FROM role_permissions
+            WHERE RoleID = :roleId AND Permission = :linkID AND Deleted = 0
         ");
         $stmt->bindValue(":roleId", $roleId, PDO::PARAM_INT);
+        $stmt->bindValue(":linkID", $linkID, PDO::PARAM_INT);
         $stmt->execute();
 
         $roleResult = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -56,20 +57,17 @@ if (!empty($_POST['link'])) {
         if (!$roleResult) {
             echo json_encode([
                 'success' => false,
-                'error' => 'Role not found'
+                'error' => 'Role Permission not found'
             ]);
             exit;
         }
 
-        $permissionsArray = array_map(
-            'trim',
-            explode(',', $roleResult["Permission"])
-        );
+
 
         // 4. Final response
         echo json_encode([
             'success' => true,
-            'hasAccess' => in_array($linkID, $permissionsArray)
+            'hasAccess' => true,
         ]);
         exit;
     } catch (PDOException $ex) {
