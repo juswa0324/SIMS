@@ -11,15 +11,15 @@
     <?php include "includes/css.php" ?>
 </head>
 
-<body>
+<body class="login-page">
     <?php include "includes/loader.php"; ?>
     <section>
         <div style="height: 100%; width:100%;">
-            <div class="login-container">
-                <div class="box">
+            <div class="login-box">
+                <div class="card card-outline card-primary">
 
                     <div class="box-body col-md-12">
-                        <p class="login-box-msg">Sign in to start your session</p>
+                        <p class="login-box-msg mt-3">Sign in to start your session</p>
 
                         <div id="login_error" class="login-box-msg">
                             <span id="error"></span>
@@ -36,7 +36,7 @@
                                 </span>
                             </div>
 
-                            <div>
+                            <div class="pb-3">
                                 <button type="button" class="btn btn-primary btn-block btn-flat" id="btnSignIn">Sign In</button>
                             </div>
                         </form>
