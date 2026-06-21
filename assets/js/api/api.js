@@ -92,3 +92,11 @@ export function showLoader() {
 export function hideLoader() {
   document.getElementById("loading").style.display = "none";
 }
+
+export function hideButton(button) {
+  document.getElementById(button).style.display = "none";
+}
+
+export function showButton(button) {
+  document.getElementById(button).style.display = "block";
+}

@@ -111,7 +111,7 @@ requireAccess($pdo, $_SESSION['LoginID'] ?? null, basename($_SERVER['PHP_SELF'])
                   <div class="col md-12">
                     <div class="float-right">
                       <div class="btn-group">
-                        <button type="button" class="btn btn-success">
+                        <button type="button" class="btn btn-success" id="personalInfoEditBtn">
                           <i class="fa fa-edit"></i> Edit
                         </button>
                       </div>
@@ -119,7 +119,7 @@ requireAccess($pdo, $_SESSION['LoginID'] ?? null, basename($_SERVER['PHP_SELF'])
                         <button
                           type="button"
                           class="btn btn-primary"
-                          style="display: none">
+                          style="display: none" id="personalInfoUpdateBtn">
                           <i class="fa fa-save"></i>
                           Update
                         </button>
@@ -137,17 +137,47 @@ requireAccess($pdo, $_SESSION['LoginID'] ?? null, basename($_SERVER['PHP_SELF'])
                 <div class="card-body">
                   <div class="col-md-12">
                     <div class="row">
-                      <div class="form-group">
-                        <label for="username">Username</label><span class="error" id="username-error"></span>
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="username" />
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="username">Username</label><span class="error" id="username-error"></span>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="username" />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="password">Password</label><span class="error" id="password-error"></span>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="password" />
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div class="card-footer"></div>
+                <div class="card-footer">
+                  <div class="col md-12">
+                    <div class="float-right">
+                      <div class="btn-group">
+                        <button type="button" class="btn btn-success" id="securityInfoEditBtn">
+                          <i class="fa fa-edit"></i> Edit
+                        </button>
+                      </div>
+                      <div class="btn-group">
+                        <button
+                          type="button"
+                          class="btn btn-primary"
+                          style="display: none" id="securityInfoUpdateBtn">
+                          <i class="fa fa-save"></i>
+                          Update
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
